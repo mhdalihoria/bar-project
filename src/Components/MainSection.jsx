@@ -55,11 +55,12 @@ export const MainSection = () => {
       );
   }, []);
 
-  // console.log(cocktailList, ingredients, glasses, categories, alcoholic);
-
-  const cocktailsElements = cocktailList.map((cocktail) => {
+  const arrayOfObjs = filteredCocktailList.length === 0 ? cocktailList : filteredCocktailList
+  const cocktailsElements = arrayOfObjs.map((cocktail) => {
     return <Cocktails key={cocktail.idDrink} details={cocktail} />;
   });
+
+  console.log(arrayOfObjs);
 
   return (
     // <div>This is Main section</div>

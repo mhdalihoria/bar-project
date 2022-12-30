@@ -47,16 +47,32 @@ export const MainSectionHeader = ({
       categories: selectedCategories,
       alcoholic: selectedAlcoholic,
     });
+    setFilteredCocktailList((prevFilteredCocktails) => {
+      return cocktailList.filter((cocktail) =>
+        //  cocktail.strCategory == search.categories
+        //   && cocktail.strAlcoholic == search.alcoholic
+        //   && cocktail.strGlass == search.glasses
+        {
+          if (
+            search.categories !== null &&
+            search.alcoholic !== null &&
+            search.glasses !== null
+          ) {
+            return (
+              cocktail.strCategory == search.categories &&
+              cocktail.strAlcoholic == search.alcoholic &&
+              cocktail.strGlass == search.glasses
+            );
+          }
+        }
+      );
+    });
   };
 
-  const filteredCocktails = cocktailList.filter(
-    (cocktail) => cocktail.strCategory == search.categories 
-      && cocktail.strAlcoholic == search.alcoholic 
-      
-  );
+  // const filteredCocktails = ;
 
-  console.log(search);
-  console.log(filteredCocktails);
+  // console.log(search);
+  // console.log(filteredCocktails);
 
   return (
     <div>
