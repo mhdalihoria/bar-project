@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const CategoriesSelectElement = ({
   categories,
   selectedCategories,
   setSelectedCategories,
 }) => {
+  const [selected, setSelected] = useState("default");
 
   const handleCategoryChange = (e) => {
     e.preventDefault();
+
+    setSelected(e.target.value);
 
     let value = Array.from(e.target.selectedOptions, (option) => option.value);
     setSelectedCategories(value);
@@ -22,8 +25,15 @@ export const CategoriesSelectElement = ({
   });
 
   return (
-    <select name="selectedCategories" id="" onChange={handleCategoryChange}>
-      <option value={null} disabled selected hidden>Categories</option>
+    <select
+      name="selectedCategories"
+      value={selected}
+      id=""
+      onChange={handleCategoryChange}
+    >
+      <option value={"default"} disabled defaultValue hidden>
+        Categories
+      </option>
       {categorySelect}
     </select>
   );

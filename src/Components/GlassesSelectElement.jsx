@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const GlassesSelectElement = ({
   glasses,
   selectedGlasses,
   setSelectedGlasses,
 }) => {
+  const [selected, setSelected] = useState("default")
+
 
   const handleGlassChange = (e) => {
     e.preventDefault();
+
+    setSelected(e.target.value)
 
     let value = Array.from(e.target.selectedOptions, (option) => option.value);
     setSelectedGlasses(value);
@@ -23,8 +27,8 @@ export const GlassesSelectElement = ({
   });
 
   return (
-    <select name="selectedGlasses" id="" onChange={handleGlassChange}>
-      <option value={null} disabled selected hidden>Glasses</option>
+    <select name="selectedGlasses" value={selected} id="" onChange={handleGlassChange}>
+      <option value={"default"} disabled defaultValue hidden>Glasses</option>
       {glassesSelect}
     </select>
   );
