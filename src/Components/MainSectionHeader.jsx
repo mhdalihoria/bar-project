@@ -1,42 +1,90 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import Select from "react-select";
+import { IngredientSelectElement } from "./IngredientSelectElement";
+import { GlassesSelectElement } from "./GlassesSelectElement";
+import { CategoriesSelectElement } from "./CategoriesSelectElement";
+import { AlcoholicSelectElement } from "./AlcoholicSelectElement";
 
-export const MainSectionHeader = ({ingredients, glasses, categories, alcoholic}) => {
-  const [selectedIngredients, setSelectedIngredients] = useState([])
+export const MainSectionHeader = ({
+  setFilteredCocktailList,
+  cocktailList, //For reference, "cocktail List" is an array of objects , each object contains the properties of each cocktail
+  ingredients,
+  glasses,
+  categories,
+  alcoholic,
+}) => {
+  const [selectedIngredients, setSelectedIngredients] = useState(null);
+  const [selectedGlasses, setSelectedGlasses] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState(null);
+  const [selectedAlcoholic, setSelectedAlcoholic] = useState(null);
+  const [search, setSearch] = useState({
+    ingredients: null,
+    glasses: null,
+    categories: null,
+    alcoholic: null,
+  });
 
+  //   const handleIngredientChange = (e) => {
+  //     e.preventDefault();
+  //     console.log(e.target)
+  //     const {value} = e.target
+  //     setSelectedIngredients(prevSelectedIngredients => {
+  //         return [
+  //             //...prevSelectedIngredients,
+  //             value
+  //         ]
+  //     })
 
-//   console.log(ingredients, glasses, categories, alcoholic);
+  // let value = Array.from(e.target.selectedOptions, (option) => option.value);
+  // setSelectedIngredients(value);
+  //   };
 
-    const ingredientsSelect = ingredients.map((ingredient, index) => {
-        return (
-            <option key={index} value={ingredient.strIngredient1}>{ingredient.strIngredient1}</option>
-        )
-    })
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearch({
+      ingredients: selectedIngredients,
+      glasses: selectedGlasses,
+      categories: selectedCategories,
+      alcoholic: selectedAlcoholic,
+    });
+  };
 
+  const filteredCocktails = cocktailList.filter(
+    (cocktail) => cocktail.strCategory == search.categories 
+      && cocktail.strAlcoholic == search.alcoholic 
+      
+  );
 
-    const handleIngredientChange = (e) => {
-        e.preventDefault()
-        // console.log(e.target)
-        // const {value} = e.target
-        // setSelectedIngredients(prevSelectedIngredients => {
-        //     return [
-        //         //...prevSelectedIngredients, 
-        //         value
-        //     ]
-        // })
+  console.log(search);
+  console.log(filteredCocktails);
 
-        let value = Array.from(e.target.selectedOptions, option => option.value);
-        setSelectedIngredients(value);
-    }
-
-
-    return (
+  return (
     <div>
-        <form>
-        <select multiple onChange={(e)=>handleIngredientChange(e)}>
-            {ingredientsSelect}
-        </select>
-        </form>
-        
+      <form onSubmit={handleSubmit}>
+        <IngredientSelectElement
+          ingredients={ingredients}
+          selectedIngredients={selectedIngredients}
+          setSelectedIngredients={setSelectedIngredients}
+        />
+        <GlassesSelectElement
+          glasses={glasses}
+          selectedGlasses={selectedGlasses}
+          setSelectedGlasses={setSelectedGlasses}
+        />
+        <CategoriesSelectElement
+          categories={categories}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+        />
+
+        <AlcoholicSelectElement
+          alcoholic={alcoholic}
+          selectedAlcoholic={selectedAlcoholic}
+          setSelectedAlcoholic={setSelectedAlcoholic}
+        />
+
+        <button>Search</button>
+      </form>
     </div>
-  )
-}
+  );
+};

@@ -9,7 +9,7 @@ export const MainSection = () => {
   const [categories, setCategories] = useState([]); // categories list
   const [alcoholic, setAlcoholic] = useState([]); // (is) Alcoholic List
   const [isLoading, setisLoading] = useState(false);
-
+  const [filteredCocktailList, setFilteredCocktailList] = useState([])
   useEffect(() => {
     setisLoading(true);
     //Fetching all the information from their API end points
@@ -57,21 +57,28 @@ export const MainSection = () => {
 
   // console.log(cocktailList, ingredients, glasses, categories, alcoholic);
 
-  
-  const cocktailsElements = cocktailList.map((cocktail)=> {
-    return <Cocktails key = {cocktail.idDrink} details = {cocktail}/>
-  })
-  
+  const cocktailsElements = cocktailList.map((cocktail) => {
+    return <Cocktails key={cocktail.idDrink} details={cocktail} />;
+  });
+
   return (
     // <div>This is Main section</div>
     <div>
-      {isLoading ? 
-        <div>Loading</div> : 
+      {isLoading ? (
+        <div>Loading</div>
+      ) : (
         <div>
-          <MainSectionHeader ingredients={ingredients} glasses={glasses} categories={categories} alcoholic={alcoholic}/>
+          <MainSectionHeader
+            cocktailList={cocktailList}
+            ingredients={ingredients}
+            glasses={glasses}
+            categories={categories}
+            alcoholic={alcoholic}
+            setFilteredCocktailList = {setFilteredCocktailList}
+          />
           {cocktailsElements}
         </div>
-      }
+      )}
     </div>
   );
 };
