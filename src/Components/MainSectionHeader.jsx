@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { IngredientSelectElement } from "./IngredientSelectElement";
 import { GlassesSelectElement } from "./GlassesSelectElement";
@@ -6,7 +6,9 @@ import { CategoriesSelectElement } from "./CategoriesSelectElement";
 import { AlcoholicSelectElement } from "./AlcoholicSelectElement";
 
 export const MainSectionHeader = ({
+  filteredCocktailList,
   setFilteredCocktailList,
+  setDidSearch,
   cocktailList, //For reference, "cocktail List" is an array of objects , each object contains the properties of each cocktail
   ingredients,
   glasses,
@@ -41,14 +43,20 @@ export const MainSectionHeader = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("clicked");
+    setDidSearch(true)
     setSearch({
       ingredients: selectedIngredients,
       glasses: selectedGlasses,
       categories: selectedCategories,
       alcoholic: selectedAlcoholic,
     });
+  };
+
+  useEffect(() => {
+    //  if(filteredCocktailList.length === 0){
     setFilteredCocktailList((prevFilteredCocktails) => {
-      return cocktailList.filter((cocktail) =>
+      const filteredList = cocktailList.filter((cocktail) =>
         //  cocktail.strCategory == search.categories
         //   && cocktail.strAlcoholic == search.alcoholic
         //   && cocktail.strGlass == search.glasses
@@ -66,13 +74,11 @@ export const MainSectionHeader = ({
           }
         }
       );
+      if (prevFilteredCocktails !== filteredList || typeof prevFilteredCocktails === "undefined") {
+        return filteredList
+      }
     });
-  };
-
-  // const filteredCocktails = ;
-
-  // console.log(search);
-  // console.log(filteredCocktails);
+  }, [search]);
 
   return (
     <div>

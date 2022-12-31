@@ -10,6 +10,7 @@ export const MainSection = () => {
   const [alcoholic, setAlcoholic] = useState([]); // (is) Alcoholic List
   const [isLoading, setisLoading] = useState(false);
   const [filteredCocktailList, setFilteredCocktailList] = useState([])
+  const [didSearch, setDidSearch] = useState(false)
   useEffect(() => {
     setisLoading(true);
     //Fetching all the information from their API end points
@@ -54,13 +55,15 @@ export const MainSection = () => {
         }
       );
   }, []);
+  
 
   const arrayOfObjs = filteredCocktailList.length === 0 ? cocktailList : filteredCocktailList
   const cocktailsElements = arrayOfObjs.map((cocktail) => {
     return <Cocktails key={cocktail.idDrink} details={cocktail} />;
   });
-
+  
   console.log(arrayOfObjs);
+  console.log(filteredCocktailList);
 
   return (
     // <div>This is Main section</div>
@@ -75,8 +78,11 @@ export const MainSection = () => {
             glasses={glasses}
             categories={categories}
             alcoholic={alcoholic}
+            filteredCocktailList = {filteredCocktailList}
             setFilteredCocktailList = {setFilteredCocktailList}
+            setDidSearch = {setDidSearch}
           />
+          {(filteredCocktailList.length === 0 && didSearch)&& <div>Sorry, we don't have that, Here's other options you may be intersted in</div>}
           {cocktailsElements}
         </div>
       )}
