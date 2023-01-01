@@ -62,7 +62,7 @@ export const MainSection = () => {
     return <Cocktails key={cocktail.idDrink} details={cocktail} />;
   });
   
-  console.log(arrayOfObjs);
+  // console.log(arrayOfObjs);
   console.log(filteredCocktailList);
 
   return (

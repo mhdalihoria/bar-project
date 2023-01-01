@@ -4,6 +4,8 @@ import { IngredientSelectElement } from "./IngredientSelectElement";
 import { GlassesSelectElement } from "./GlassesSelectElement";
 import { CategoriesSelectElement } from "./CategoriesSelectElement";
 import { AlcoholicSelectElement } from "./AlcoholicSelectElement";
+import getIngredientsArr from "../utils/getIngredientsArr";
+import arrayCompare from "../utils/arrayCompare";
 
 export const MainSectionHeader = ({
   filteredCocktailList,
@@ -26,25 +28,10 @@ export const MainSectionHeader = ({
     alcoholic: null,
   });
 
-  //   const handleIngredientChange = (e) => {
-  //     e.preventDefault();
-  //     console.log(e.target)
-  //     const {value} = e.target
-  //     setSelectedIngredients(prevSelectedIngredients => {
-  //         return [
-  //             //...prevSelectedIngredients,
-  //             value
-  //         ]
-  //     })
-
-  // let value = Array.from(e.target.selectedOptions, (option) => option.value);
-  // setSelectedIngredients(value);
-  //   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("clicked");
-    setDidSearch(true)
+    setDidSearch(true);
     setSearch({
       ingredients: selectedIngredients,
       glasses: selectedGlasses,
@@ -54,28 +41,30 @@ export const MainSectionHeader = ({
   };
 
   useEffect(() => {
-    //  if(filteredCocktailList.length === 0){
     setFilteredCocktailList((prevFilteredCocktails) => {
       const filteredList = cocktailList.filter((cocktail) =>
-        //  cocktail.strCategory == search.categories
-        //   && cocktail.strAlcoholic == search.alcoholic
-        //   && cocktail.strGlass == search.glasses
         {
+          const ingredientsArr = getIngredientsArr(cocktail);
           if (
+            search.ingredients !== null &&
             search.categories !== null &&
             search.alcoholic !== null &&
             search.glasses !== null
           ) {
             return (
-              cocktail.strCategory == search.categories &&
-              cocktail.strAlcoholic == search.alcoholic &&
-              cocktail.strGlass == search.glasses
+              arrayCompare(search.ingredients, ingredientsArr) &&
+              cocktail.strCategory == search.categories[0] &&
+              cocktail.strAlcoholic == search.alcoholic[0] &&
+              cocktail.strGlass == search.glasses[0]
             );
           }
         }
       );
-      if (prevFilteredCocktails !== filteredList || typeof prevFilteredCocktails === "undefined") {
-        return filteredList
+      if (
+        prevFilteredCocktails !== filteredList ||
+        typeof prevFilteredCocktails === "undefined"
+      ) {
+        return filteredList;
       }
     });
   }, [search]);
